@@ -1,0 +1,69 @@
+.pendingRequest-card-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 50px;
+  font-family: "Cormorant", serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+  justify-content: center;
+}
+
+.pendingRequest-notifications-h3 {
+  border-bottom: 1px solid grey;
+  display: flex;
+  align-items: center;
+  padding-bottom: 20px;
+  font-family: "Cormorant", serif;
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+}
+
+.pendingRequests-cards-full {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+}
+
+.accept-button-pendingRequests{
+ background-color: #7c7a7a;
+ color: aliceblue;
+ border: none;
+ cursor: pointer;
+}
+
+.accept-button-pendingRequests:hover{
+  background-color:  #939292;
+}
+
+.pendingRequests-user-image {
+  width: 50px;
+  height: 50px;
+}
+
+@media (max-width: 764px) {
+  .pendingRequests-cards-full {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: "Cormorant", serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #444;
+    align-items: center;
+    justify-content: center;
+    margin-left: 50px;
+  }
+}
+
+@media (max-width: 500px) {
+  .pendingRequests-cards-full {
+    display: grid;
+    grid-template-columns: 1fr;
+    font-family: "Cormorant", serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #444;
+  }
+}

@@ -1,0 +1,218 @@
+.user-connections-section-title-h4{
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid grey;
+  gap: 10px;
+}
+
+.user-connections-section{
+  display: flex;
+  flex-direction: column;
+  background-color: #444;
+  color: white;
+}
+
+.connection-image-section-part{
+  border: 1px solid grey;
+  border-radius: 100px;
+  margin-top: 10px;
+  width: 49px;
+  height: 49px;
+}
+
+.connection-image-section-part:hover{
+  width: 50px;
+  height: 50px;
+}
+
+.user-connections-title-h4{
+  font-family: "Cormorant", serif;
+  font-weight: 600;
+  font-size: 24px;
+  color: white;
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+.connection-card-prelude{
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  margin-top: 20px;
+  gap: 10px;
+  justify-content: center;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+
+.connection-card{
+  display: flex;
+  gap: 50px;
+  background-color: rgb(255, 251, 251);
+  border-radius: 10px;
+  padding-left: 50px;
+  color: black;
+}
+
+.connection-card:hover{
+  background-color: rgb(245, 241, 241);
+}
+
+
+.connections-texts-and-timestamps{
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.pure-connection-timestamps{
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.pure-connection-timestamps-title-h3{
+  border-right: 1px solid grey;
+}
+
+.pure-connection-timestamps-title-h3-since{
+  padding-right: 10px;
+}
+
+.pure-connection-timestamps-title-p-since-2{
+  border-top: 1px solid grey;
+}
+
+.button-profile-bottom-part{
+  width: 100px;
+  height: 30px;
+}
+
+.button-profile-bottom-part-connections{
+  border: none;
+  background-color: #a6a5a5;
+  color: white;
+  width: 50px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.button-profile-bottom-part-connections:hover{
+  color: rgb(36, 35, 35);
+}
+
+@media (max-width: 1150px) {
+  .connection-card-prelude {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-family: "Cormorant", serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #444;
+    align-items: center;
+    justify-content: center;
+    margin-left: 50px;
+  }
+}
+
+@media (max-width: 800px) {
+  .connection-card-prelude {
+    display: grid;
+    grid-template-columns: 1fr;
+    font-family: "Cormorant", serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #444;
+    align-items: center;
+    justify-content: center;
+    margin-left: 50px;
+  }
+}
+
+@media (max-width: 420px) {
+  .connection-card-prelude {
+    display: grid;
+    grid-template-columns: 1fr;
+    font-family: "Cormorant", serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #444;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  .user-connections-section-title-h4{
+    font-size: 10px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .user-connections-title-h4{
+    font-size: 16px;
+
+  }
+
+  .connection-user-input{
+    width: 100px;
+  }
+
+  .connection-card{
+    display: flex;
+    background-color: rgb(255, 251, 251);
+    border-radius: 10px;
+    color: black;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .connection-image-section-part{
+    border: 1px solid grey;
+    border-radius: 100px;
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+  }
+}
+
+@media (max-width: 330px) {
+  .connection-card-prelude {
+    display: grid;
+    grid-template-columns: 0.5fr;
+    font-family: "Cormorant", serif;
+    font-weight: 600;
+    font-size: 10px;
+    color: #444;
+    align-items: center;
+  }
+
+  .connection-card{
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 251, 251);
+    border-radius: 10px;
+    color: black;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+  }
+
+  .connection-image-section-part{
+    border: 1px solid grey;
+    border-radius: 100px;
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+  }
+}

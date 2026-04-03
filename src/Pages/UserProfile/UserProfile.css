@@ -1,0 +1,358 @@
+/* UserProfile.css */
+
+/* Main container */
+.user-profile-container {
+  width: 100%;
+  max-width: 650px;
+  margin: 20px auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  color: #333;
+  padding: 10px;
+}
+
+.elipsis-content-section{
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+/* Profile card */
+.user-profile-content {
+  position: relative;
+  background-color: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  text-align: left;
+}
+
+/* Cover photo */
+.cover-photo {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+/* Profile image */
+.profile-image {
+  position: absolute;
+  top: 120px;
+  left: 20px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 3px solid #fff;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+}
+
+.profile-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* User info section */
+.profile-info {
+  padding: 60px 20px 20px 20px; /* space for profile image */
+}
+
+.profile-info h3 {
+  margin: 0 0 5px 0;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 16px;
+}
+
+.profile-info-div{
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 0.3;
+}
+
+.birthday-image{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.profile-info-div-p {
+  margin: 2px 0; /* very small spacing */
+  font-size: 15px;
+  color: #555;
+  line-height: 1;
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 16px;
+  align-items: center;
+  display: flex;
+}
+
+.email-image{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.bio-image{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.city-image{
+  width: 20px;
+  height: 20px;
+  margin-right: 5px;
+}
+
+.profile-info-insides-Following{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+  line-height: 0.5;
+}
+
+.profile-info-insides-Following-img-p{
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 16px;
+  color: rgb(54, 54, 205);
+  cursor: pointer;
+}
+
+.profile-info-insides-Following-img-p:hover{
+  color: rgb(7, 7, 56);
+}
+
+.profile-info-insides-Followers-img{
+  width: 20px;
+  height: 20px;
+}
+
+.profile-info-insides-Following-img{
+  width: 20px;
+  height: 20px;
+}
+
+.profile-info-insides-Followers{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.5;
+  margin-top: 10px;
+}
+
+.profile-info-insiders-friends{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.5;
+  margin-top: 10px;
+}
+
+.profile-info-insides{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 60px;
+}
+
+.profile-info-insiders-friends-image{
+  width: 20px;
+  height: 20px;
+}
+
+.profile-info-insiders-messages{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  line-height: 0.5;
+  margin-top: 10px;
+}
+
+.profile-info-insiders-messages-img{
+  width: 20px;
+  height: 20px;
+}
+
+.profile-info-insiders-messages-p{
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 16px;
+  color: rgb(54, 54, 205);
+  cursor: pointer;
+}
+
+.profile-info-insiders-messages-p:hover{
+  color: rgb(7, 7, 56);
+}
+
+.profile-info-insides-Followers-p{
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 16px;
+  color: rgb(54, 54, 205);
+  cursor: pointer;
+}
+
+.profile-info-insides-Followers-p:hover{
+  color: rgb(7, 7, 56);
+}
+
+.profile-info-insiders-posts{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 0.5;
+  margin-top: 10px;
+}
+
+.profile-info-insiders-posts-img{
+  width: 20px;
+  height: 20px;
+}
+
+.profile-info-insiders-posts-p{
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 16px;
+  color: rgb(54, 54, 205);
+  cursor: pointer;
+}
+
+.profile-info-insiders-posts-p:hover{
+  color: rgb(7, 7, 56);
+}
+
+.profile-info-insides{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.elipsis-content-section {
+  position: relative;
+  line-height: 0.2;
+  display: flex;
+}
+
+/* ICON */
+.elipsis-icon {
+  cursor: pointer;
+}
+
+/* HOVER SHOW MENU */
+.elipsis-content-section:hover .elipsis-context {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* DROPDOWN MENU */
+.elipsis-context {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  width: auto;
+
+  background: rgba(146, 142, 142, 0.95);
+  padding: 10px;
+  border-radius: 10px;
+
+  display: flex;
+  gap: 10px;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+
+  transition: all 0.25s ease;
+  z-index: 999;
+
+  list-style: none;
+  color: white;
+  font-family: "Cormorant", serif;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ITEMS */
+.elipsis-context li {
+  padding: 5px 8px;
+  border-radius: 6px;
+  transition: 0.2s;
+}
+
+.elipsis-context li:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media screen and (max-width:480px) {
+  .cover-photo { height: 150px; }
+  .profile-image { top: 100px; left: 15px; width: 80px; height: 80px; border-width: 2px; }
+  .profile-info { padding: 55px 15px 15px 15px; font-size: 18px; word-wrap: break-word;}
+  .profile-info h3 { font-size: 18px; }
+  .profile-info p { font-size: 8px; }
+  .profile-info-insides{
+    display: grid;
+    grid-template-columns: 0.1fr 0.1fr 0.1fr 0.1fr;
+  }
+  .profile-info-insides-Following-img-p{visibility: 5px}
+  .profile-info-insides-Followers-p{visibility: 5px}
+  .profile-info-insiders-messages-p{visibility: 5px}
+  .profile-info-insiders-posts-p{font-size: 5px}
+}
+
+/* ===== Responsive ===== */
+@media screen and (max-width: 420px) {
+  .cover-photo { height: 150px; }
+  .profile-image { top: 100px; left: 15px; width: 80px; height: 80px; border-width: 2px; }
+  .profile-info { padding: 55px 15px 15px 15px; font-size: 18px; word-wrap: break-word;}
+  .profile-info h3 { font-size: 18px; }
+  .profile-info p { font-size: 8px; }
+  .profile-info-insides{
+    display: grid;
+    grid-template-columns: 0.1fr 0.1fr 0.1fr 0.1fr 0.1fr;
+  }
+  .profile-info-insides-Following-img-p{font-size: 8px}
+  .profile-info-insides-Followers-p{font-size: 8px}
+  .profile-info-insiders-messages-p{font-size: 8px}
+  .profile-info-insiders-posts-p{font-size: 8px}
+}
+
+@media screen and (max-width: 300px) {
+  .profile-info-insides{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+
+  .profile-info-insides-Following-img-p{font-size: 2px}
+  .profile-info-insides-Followers-p{font-size: 2px}
+  .profile-info-insiders-messages-p{font-size: 2px}
+  .profile-info-insiders-posts-p{font-size: 2px}
+
+  .profile-info-insides img{
+    width: 7px;
+    height: 7px;
+  }
+}

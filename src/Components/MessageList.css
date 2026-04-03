@@ -1,0 +1,50 @@
+.message-list {
+  max-height: 400px;
+  overflow-y: auto;
+  padding: 15px;
+  background: #f5f7fb;
+}
+
+/* Message Row */
+.message-row {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.message-row.me {
+  justify-content: flex-end;
+}
+
+.message-row.other {
+  justify-content: flex-start;
+}
+
+/* Bubble */
+.message-bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14px;
+  line-height: 1.4;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* My messages */
+.message-row.me .message-bubble {
+  background: #4a90e2;
+  color: white;
+  border-bottom-right-radius: 4px;
+}
+
+/* Other messages */
+.message-row.other .message-bubble {
+  background: white;
+  border-bottom-left-radius: 4px;
+}
+
+/* Images */
+.message-bubble img {
+  margin-top: 6px;
+  max-width: 100%;
+  border-radius: 10px;
+}

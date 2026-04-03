@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Cascadia+Mono:ital,wght@0,200..700;1,200..700&family=Cormorant:ital,wght@0,300..700;1,300..700&family=Mulish:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+
+.Navbar-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  background-color: white;
+  border-bottom: 1px solid black;
+  border-top: 1px solid black;
+  margin-bottom: 0;
+}
+
+.navbar-ul-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-ul-section-inside {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  justify-content: center;
+  text-align: center;
+}
+
+.navbar-ul-section-inside-li {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  align-items: center;
+}
+
+.navbar-ul-section-inside-li:hover {
+  font-weight: bold;
+}
+
+.navbar-button {
+  border: none;
+  background-color: transparent;
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 40px;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbar-button:hover {
+  font-weight: bold;
+}
+
+.navbar-login {
+  width: 40px;
+  height: 20px;
+}
+
+.navbar-login:hover {
+  width: 40px;
+  height: 25px;
+}
+
+.navbar-login-LogIn {
+  position: relative;
+}
+
+.navbar-login-LogIn:hover .navbar-login-section-ul {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.navbar-login-section-ul {
+  position: absolute;
+  top: 35px;
+  left: 0;
+  width: 80px;
+
+  background: rgba(30, 30, 30, 0.95);
+  padding: 15px;
+  border-radius: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+
+  transition: all 0.25s ease;
+  z-index: 999;
+  list-style: none;
+  color: white;
+  cursor: pointer;
+  font-family: "Cormorant", serif;
+  font-optical-sizing: auto;
+  font-weight: weight;
+  font-style: normal;
+  font-size: 16px;
+}
+
+.navbar-sign-in-SignIn:hover {
+  color: rgb(138, 137, 137);
+}
+
+.navbar-sign-up-SignUp:hover {
+  color: rgb(138, 137, 137);
+}
+
+@media (max-width: 768px) {
+  .Navbar-section {
+    display: flex;
+    border: none;
+  }
+
+  .navbar-ul-section-inside-p {
+    display: none;
+  }
+
+  .navbar-button {
+    font-size: 16px;
+    padding-right: 20px;
+  }
+
+  .navbar-login-LogIn{
+    padding-left: 10px;
+  }
+}

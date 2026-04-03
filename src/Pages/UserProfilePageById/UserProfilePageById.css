@@ -1,0 +1,203 @@
+/* ===== CONNECTION BUTTONS CONTAINER ===== */
+.profile-info-insides-connections {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  /* responsive wrap */
+}
+
+.profile-info-insides-byIdsec {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  justify-content: center;
+  margin-top: 50px;
+}
+
+.profile-info-insides-Following-by-id {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.profile-info-insides-Followers-by-id {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+.profile-info-insiders-friends-by-id {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
+}
+
+/* ===== BASE BUTTON STYLE ===== */
+.profile-btn {
+  background-color: #5c5c5c;
+  color: #fff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 90px;
+  text-align: center;
+}
+
+/* ===== HOVER EFFECT ===== */
+.profile-btn:hover {
+  background-color: #7a7a7a;
+  transform: translateY(-2px);
+}
+
+/* ===== ACTIVE / CLICK EFFECT ===== */
+.profile-btn:active {
+  transform: scale(0.96);
+}
+
+/* ===== SPECIFIC BUTTONS ===== */
+.profile-info-insides-Following-img-button {
+  background-color: #134e8d;
+  color: white;
+  border: 1px solid #134e8d;
+  width: 50px;
+}
+
+.profile-info-insides-Followers-friend-button-message {
+  background-color: #3886d8;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.profile-info-insides-Followers-friend-button-message:hover {
+  background-color: #3179c6;
+}
+
+.profile-info-insides-Following-img-button:hover {
+  background-color: #2264aa;
+}
+
+.profile-info-insides-Followers-friend-button {
+  background-color: #0b471f;
+  color: white;
+  border: #0b471f;
+  width: 50px;
+  cursor: pointer;
+}
+
+.profile-info-insides-Followers-friend-button:hover {
+  background-color: #1a7438;
+}
+
+.profile-info-insiders-messages-button {
+  background-color: #ff7a18;
+  color: white;
+  border: 1px solid #ff7a18;
+  width: 58px;
+  cursor: pointer;
+}
+
+.profile-info-insiders-messages-button:hover {
+  background-color: #f06909;
+}
+
+/* ===== MOBILE RESPONSIVENESS ===== */
+@media (max-width: 700px) {
+  .profile-info-insides-connections {
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .profile-info-insides-byIdsec {
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    gap: 30px;
+  }
+
+  .profile-info-insides-connections {
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    flex: none;
+    gap: 0;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .profile-info-insides-Following-img-button {
+    width: 30px;
+    font-size: 16px;
+  }
+
+  .profile-btn {
+    flex: 1;
+    /* buttons take equal width */
+    min-width: 70px;
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+}
+
+/* ===== EXTRA SMALL DEVICES ===== */
+@media (max-width: 420px) {
+  .profile-info-insides-connections {
+    justify-content: center;
+    gap: 4px;
+    font-size: 16px;
+  }
+
+  .profile-info-insiders-messages-button {
+    width: auto;
+    font-size: 8px;
+  }
+
+  .profile-info-insides-Followers-friend-button {
+    width: auto;
+    font-size: 8px;
+  }
+
+  .profile-info-insides-Followers-friend-button-message {
+    width: auto;
+    font-size: 8px;
+  }
+
+  .profile-info-insides-byIdsec {
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    gap: 10px;
+  }
+
+  .profile-info-insides-Following-img-button {
+    width: 30px;
+    font-size: 16px;
+  }
+
+  .profile-info-insides-connections {
+    display: flex;
+    align-items: center;
+  }
+
+  .profile-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 310px) {
+  .profile-info-insides-connections {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+}
