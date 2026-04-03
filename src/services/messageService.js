@@ -3,7 +3,7 @@ import axios from "axios";
 // Create an API instance
 export const createAPI = (token) => {
   return axios.create({
-    baseURL: "http://localhost:4000/api/message",
+    baseURL: "https://social-media-application-backend-1-8422.onrender.com/api/message",
     headers: { Authorization: `Bearer ${token}` },
     withCredentials: true,
   });
