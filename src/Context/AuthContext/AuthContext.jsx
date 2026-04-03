@@ -15,7 +15,7 @@ export const StoreContextProvider = ({ children }) => {
   const [pendingRequests, setPendingRequests] = useState([]);
 
   // Backend URL
-  const backendURL = "http://localhost:4000";
+  const backendURL = "https://social-media-application-backend-1-8422.onrender.com";
 
   // Counting connections, followers, followings, pendingRequests etc. By calling api from the backend
   const [ countConnections, setCountConnections ] = useState(0);
