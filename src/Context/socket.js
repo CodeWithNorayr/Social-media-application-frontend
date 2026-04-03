@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 export const createSocket = (userId) => {
-  return io("http://localhost:4000", {
+  return io("https://social-media-application-backend-1-8422.onrender.com", {
     query: { userId }
   });
 };
