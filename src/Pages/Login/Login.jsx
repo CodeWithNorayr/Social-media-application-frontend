@@ -71,7 +71,11 @@ const Login = () => {
             onChange={onChangeHandler}
             required
           />
-          <p>Password</p>
+            <p>Password</p>
+        </div>
+
+        <div>
+          <p>Need an account ? <span onClick={()=>navigate("/user/registration")} style={{cursor:'pointer',textDecoration:"underline"}}>Register</span></p>
         </div>
 
         {/* BUTTON */}
