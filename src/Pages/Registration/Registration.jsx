@@ -175,6 +175,10 @@ const Registration = () => {
           <p>Cover Photo</p>
         </div>
 
+        <div>
+          <p>Already have an account ? <span onClick={()=>navigate("/user/login")} style={{cursor:"pointer", textDecoration:"underline"}}>Login</span></p>
+        </div>
+
         {/* BUTTON */}
         <button
           className='user-form-registration-submit-button'
