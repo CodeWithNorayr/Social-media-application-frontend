@@ -27,7 +27,7 @@ const Navbar = () => {
           <li onClick={()=>navigate("/connections")} className='navbar-ul-section-inside-li'>
             <Handshake /> <p className='navbar-ul-section-inside-p'>Friends</p>
           </li>
-          <li onClick={()=>navigate("/pendingRequests")} className='navbar-ul-section-inside-li'>
+          <li onClick={()=>navigate("/notifications")} className='navbar-ul-section-inside-li'>
             <Bell /> <p className='navbar-ul-section-inside-p'>Notifications</p>
           </li>
 
