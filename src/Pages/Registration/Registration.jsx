@@ -114,12 +114,12 @@ const Registration = () => {
           <input
             type="password"
             name="password"
-            placeholder="********"
+            placeholder="aA@#******"
             value={data.password}
             onChange={onChangeHandler}
             required
           />
-          <p>Password</p>
+          <p>Password (aA#@***) </p>
         </div>
 
         {/* LOCATION */}
