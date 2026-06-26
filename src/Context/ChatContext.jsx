@@ -8,47 +8,56 @@ import { toast } from "react-toastify";
 export const ChatContext = createContext();
 
 export const ChatProvider = ({ children }) => {
-  const { backendURL, token } = useContext(StoreContext);
+  const { backendURL, token, userData } = useContext(StoreContext);
+
   const [messages, setMessages] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
   const [socket, setSocket] = useState(null);
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch user connections
+  /* =========================
+      CONNECTIONS
+  ========================= */
   const fetchingConnections = async () => {
     if (!token) return;
-    setLoading(true);
+
     try {
-      const response = await axios.get(`${backendURL}/api/user/connections`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (response.data.success) {
-        setUsers(response.data.connections);
-      } else {
-        toast.warn("Server error");
+      setLoading(true);
+
+      const res = await axios.get(
+        `${backendURL}/api/user/connections`,
+        {
+          headers: { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      if (res.data.success) {
+        setUsers(res.data.connections);
       }
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || "Server error");
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to load users");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    if (token) fetchingConnections();
-  }, [backendURL, token]);
+    fetchingConnections();
+  }, [token]);
 
-  // Initialize socket
+  /* =========================
+      SOCKET INIT (FIXED)
+  ========================= */
   useEffect(() => {
-    const userId = localStorage.getItem("userId");
-    if (!userId) return;
+    if (!userData?._id) return;
 
-    const newSocket = createSocket(userId);
+    const newSocket = createSocket(userData._id);
     setSocket(newSocket);
 
-    newSocket.on("receiveMessage", (message) => {
+    // FIXED EVENT NAME
+    newSocket.on("newMessage", (message) => {
       setMessages((prev) => {
         if (prev.some((m) => m._id === message._id)) return prev;
         return [...prev, message];
@@ -56,43 +65,55 @@ export const ChatProvider = ({ children }) => {
     });
 
     return () => {
-      newSocket.off("receiveMessage");
+      newSocket.off("newMessage");
       newSocket.disconnect();
     };
-  }, []);
+  }, [userData?._id]);
 
-  // Select user
+  /* =========================
+      SELECT USER
+  ========================= */
   const selectUser = async (user) => {
     setSelectedUser(user);
     await fetchMessages(user._id);
   };
 
-  // Fetch messages with a user
+  /* =========================
+      FETCH MESSAGES
+  ========================= */
   const fetchMessages = async (userId) => {
     if (!token) return;
+
     try {
       const res = await api.getMessages(userId, token);
+
+      // backend returns: { messages }
       setMessages(res.data.messages || []);
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
       toast.error("Failed to fetch messages");
     }
   };
 
-  // Send a new message
+  /* =========================
+      SEND MESSAGE (FIXED)
+  ========================= */
   const sendNewMessage = async (receiverId, data) => {
     if (!token) return;
+
     try {
       const res = await api.sendMessage(receiverId, data, token);
-      const message = res.data.data;
 
-      setMessages((prev) => [...prev, message]);
+      // backend returns: { data: newMessage }
+      const newMessage = res.data.data;
+
+      setMessages((prev) => [...prev, newMessage]);
 
       if (socket) {
-        socket.emit("sendMessage", message);
+        socket.emit("sendMessage", newMessage);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
       toast.error("Failed to send message");
     }
   };
