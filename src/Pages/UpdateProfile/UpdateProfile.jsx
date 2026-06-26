@@ -1,12 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState } from "react";
 import "./UpdateProfile.css";
-import { StoreContext } from '../../Context/AuthContext/AuthContext';
-import assets from '../../assets/assets';
+import { StoreContext } from "../../Context/AuthContext/AuthContext";
+import assets from "../../assets/assets";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 const UpdateProfile = () => {
-
   const { backendURL, token, navigate } = useContext(StoreContext);
 
   const [data, setData] = useState({
@@ -14,58 +13,50 @@ const UpdateProfile = () => {
     location: "",
     password: "",
     dob: "",
-    bio: ""
+    bio: "",
   });
 
   const [image, setImage] = useState(null);
   const [coverPhoto, setCoverPhoto] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  /* TEXT INPUT */
-  const onChangeHandler = (event) => {
-    const { name, value } = event.target;
-    setData(prev => ({ ...prev, [name]: value }));
+  const onChangeHandler = (e) => {
+    const { name, value } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
   };
 
-  /* FILE INPUT */
-  const fileChangeHandler = (event) => {
-    const { name, files } = event.target;
+  const fileChangeHandler = (e) => {
+    const { name, files } = e.target;
 
-    if (name === "image") {
-      setImage(files[0]);
-    } else if (name === "coverPhoto") {
-      setCoverPhoto(files[0]);
+    if (name === "image") setImage(files[0]);
+    if (name === "coverPhoto") setCoverPhoto(files[0]);
+  };
+
+  const updateUserAccountData = async (e) => {
+    e.preventDefault();
+
+    if (!token) {
+      toast.error("Not authenticated");
+      return;
     }
-  };
-
-  /* SUBMIT */
-  const updateUserAccountData = async (event) => {
-    event.preventDefault();
 
     setLoading(true);
 
     try {
       const formData = new FormData();
 
-      // Always send fields (avoid empty body issue)
-      formData.append("name", data.name || "");
-      formData.append("password", data.password || "");
-      formData.append("location", data.location || "");
-      formData.append("bio", data.bio || "");
+      // IMPORTANT: only send fields if user typed something
+      if (data.name) formData.append("name", data.name);
+      if (data.password) formData.append("password", data.password);
+      if (data.location) formData.append("location", data.location);
+      if (data.bio) formData.append("bio", data.bio);
 
-      // Fix date format
       if (data.dob) {
         formData.append("dob", new Date(data.dob).toISOString());
       }
 
-      // Files
       if (image) formData.append("image", image);
       if (coverPhoto) formData.append("coverPhoto", coverPhoto);
-
-      // DEBUG (very useful)
-      for (let pair of formData.entries()) {
-        console.log(pair[0], pair[1]);
-      }
 
       const response = await axios.put(
         `${backendURL}/api/user/update-user-profile`,
@@ -73,131 +64,85 @@ const UpdateProfile = () => {
         {
           headers: {
             Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data"
-          }
+          },
         }
       );
 
       if (response.data.success) {
-        toast.success("Profile updated successfully ✅");
-        navigate("/");
+        toast.success("Profile updated successfully");
+        navigate("/user/profile");
       } else {
         toast.error(response.data.message || "Update failed");
       }
-
     } catch (error) {
-      console.log("ERROR:", error.response?.data || error.message);
-      toast.error(error.response?.data?.message || "Failed to save changes");
+      console.log(error);
+      toast.error(error.response?.data?.message || "Server error");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className='user-profile-update-full-form'>
-      <form onSubmit={updateUserAccountData} className='user-profile-update-form'>
+    <div className="user-profile-update-full-form">
+      <form onSubmit={updateUserAccountData} className="user-profile-update-form">
 
-        <h3>Update account data</h3>
+        <h3>Update Profile</h3>
 
-        <div className='user-profile-update-full-div'>
+        <input
+          type="text"
+          name="name"
+          placeholder="Username"
+          value={data.name}
+          onChange={onChangeHandler}
+        />
 
-          <div>
-            <p>Username</p>
-            <input
-              type="text"
-              name="name"
-              value={data.name}
-              onChange={onChangeHandler}
-            />
-          </div>
+        <input
+          type="text"
+          name="location"
+          placeholder="Location"
+          value={data.location}
+          onChange={onChangeHandler}
+        />
 
-          <div>
-            <p>Location</p>
-            <input
-              type="text"
-              name="location"
-              value={data.location}
-              onChange={onChangeHandler}
-            />
-          </div>
+        <input
+          type="text"
+          name="bio"
+          placeholder="Bio"
+          value={data.bio}
+          onChange={onChangeHandler}
+        />
 
-          <div>
-            <p>Bio</p>
-            <input
-              type="text"
-              name="bio"
-              value={data.bio}
-              onChange={onChangeHandler}
-            />
-          </div>
+        <input
+          type="date"
+          name="dob"
+          value={data.dob}
+          onChange={onChangeHandler}
+        />
 
-          <div>
-            <p>Date of birth</p>
-            <input
-              type="date"
-              name="dob"
-              value={data.dob}
-              onChange={onChangeHandler}
-            />
-          </div>
+        <label>
+          <p>Profile Image</p>
+          <img src={assets.UploadImage} alt="upload" />
+          <input type="file" name="image" hidden onChange={fileChangeHandler} />
+        </label>
 
-          <div>
-            <label htmlFor="image">
-              <p>Profile picture</p>
-              <img
-                className='coverPhoto-image-update-profile'
-                src={assets.UploadImage}
-                alt="upload"
-              />
-            </label>
-            <input
-              type="file"
-              name="image"
-              id="image"
-              onChange={fileChangeHandler}
-              hidden
-            />
-          </div>
+        <label>
+          <p>Cover Photo</p>
+          <img src={assets.CoverPhoto} alt="cover" />
+          <input type="file" name="coverPhoto" hidden onChange={fileChangeHandler} />
+        </label>
 
-          <div>
-            <label htmlFor="coverPhoto">
-              <p>Cover photo</p>
-              <img
-                className='coverPhoto-image-update-profile'
-                src={assets.CoverPhoto}
-                alt="cover"
-              />
-            </label>
-            <input
-              type="file"
-              name="coverPhoto"
-              id="coverPhoto"
-              onChange={fileChangeHandler}
-              hidden
-            />
-          </div>
+        <input
+          type="password"
+          name="password"
+          placeholder="New password"
+          value={data.password}
+          onChange={onChangeHandler}
+        />
 
-          <div>
-            <p>New password</p>
-            <input
-              type="password"
-              name="password"
-              value={data.password}
-              onChange={onChangeHandler}
-            />
-          </div>
+        <button type="submit" disabled={loading}>
+          {loading ? "Saving..." : "Save Changes"}
+        </button>
 
-          <div>
-            <button
-              className='save-the-changes-btn'
-              type="submit"
-              disabled={loading}
-            >
-              {loading ? "Saving..." : "Save the changes"}
-            </button>
-          </div>
-
-        </div>
       </form>
     </div>
   );
