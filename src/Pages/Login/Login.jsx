@@ -1,52 +1,69 @@
-import React from 'react';
+import React, { useContext, useState } from "react";
 import "./Login.css";
 import { toast } from "react-toastify";
 import axios from "axios";
-import { StoreContext } from '../../Context/AuthContext/AuthContext';
-import { useContext, useState } from 'react';
+import { StoreContext } from "../../Context/AuthContext/AuthContext";
 
 const Login = () => {
-
   const [loading, setLoading] = useState(false);
 
   const [data, setData] = useState({
     password: "",
-    email: ""
+    email: "",
   });
 
-  const { backendURL, setToken, navigate } = useContext(StoreContext)
+  const { backendURL, setToken, navigate } = useContext(StoreContext);
 
   const onChangeHandler = (event) => {
-    const name = event.target.name
-    const value = event.target.value
-    setData((data) => ({ ...data, [name]: value }))
+    const { name, value } = event.target;
+    setData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const submitLoginForm = async (event) => {
     event.preventDefault();
+
+    if (loading) return;
+
     setLoading(true);
 
     try {
-      const response = await axios.post(`${backendURL}/api/user/user-loggin`, data);
+      const response = await axios.post(
+        `${backendURL}/api/user/user-loggin`,
+        {
+          email: data.email.trim(),
+          password: data.password,
+        }
+      );
 
-      if (response.data.success) {
+      if (response.data?.success) {
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.user._id); // ✅ IMPORTANT
-        toast.success(`${response.data.user.name} is successfully logged in`);
+        localStorage.setItem("userId", response.data.user._id);
+
+        toast.success(
+          `${response.data.user.name} logged in successfully`
+        );
+
         navigate("/user/post/section");
+      } else {
+        toast.error(response.data?.message || "Login failed");
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.response?.data?.message || "Loggin failed");
+      toast.error(
+        error.response?.data?.message || "Login request failed"
+      );
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   return (
     <div className="user-registration-content">
-      <form onSubmit={submitLoginForm} className='user-form-registration'>
+      <form onSubmit={submitLoginForm} className="user-form-registration">
 
         {/* EMAIL */}
         <div>
@@ -71,25 +88,35 @@ const Login = () => {
             onChange={onChangeHandler}
             required
           />
-            <p>Password</p>
+          <p>Password</p>
         </div>
 
         <div>
-          <p>Need an account ? <span onClick={()=>navigate("/user/registration")} style={{cursor:'pointer',textDecoration:"underline"}}>Register</span></p>
+          <p>
+            Need an account?{" "}
+            <span
+              onClick={() => navigate("/user/registration")}
+              style={{
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
+            >
+              Register
+            </span>
+          </p>
         </div>
 
         {/* BUTTON */}
         <button
-          className='user-form-registration-submit-button'
+          className="user-form-registration-submit-button"
           type="submit"
           disabled={loading}
         >
-          {loading ? "Loading..." : "Login"}
+          {loading ? "Logging in..." : "Login"}
         </button>
-
       </form>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;
