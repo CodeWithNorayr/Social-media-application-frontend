@@ -3,25 +3,30 @@ import { ChatContext } from "../Context/ChatContext";
 import ChatBox from "../Components/ChatBox";
 
 const ChatPage = () => {
-  const { users, selectUser, selectedUser } = useContext(ChatContext);
+  const { users, selectUser, selectedUser, loading } = useContext(ChatContext);
 
   return (
-    <div style={{ display: "flex", gap: "20px" }}>
-      {/* Users List */}
-      <div style={{ width: "200px", borderRight: "1px solid #ccc", padding: "10px" }}>
+    <div style={{ display: "flex", height: "100vh" }}>
+
+      {/* USERS LIST */}
+      <div style={{ width: "250px", borderRight: "1px solid #ddd", padding: "10px" }}>
         <h3>Users</h3>
-        {users.length > 0 ? (
+
+        {loading ? (
+          <p>Loading...</p>
+        ) : Array.isArray(users) && users.length > 0 ? (
           users.map((user) => (
             <div
               key={user._id}
-              style={{
-                padding: "8px",
-                marginBottom: "5px",
-                cursor: "pointer",
-                backgroundColor: selectedUser?._id === user._id ? "#eee" : "#fff",
-                borderRadius: "5px",
-              }}
               onClick={() => selectUser(user)}
+              style={{
+                padding: "10px",
+                marginBottom: "6px",
+                cursor: "pointer",
+                borderRadius: "6px",
+                backgroundColor:
+                  selectedUser?._id === user._id ? "#e6e6e6" : "transparent",
+              }}
             >
               {user.name}
             </div>
@@ -31,8 +36,8 @@ const ChatPage = () => {
         )}
       </div>
 
-      {/* Chat Box */}
-      <div style={{ flex: 1 }}>
+      {/* CHAT BOX */}
+      <div style={{ flex: 1, padding: "10px" }}>
         {selectedUser ? (
           <ChatBox />
         ) : (
