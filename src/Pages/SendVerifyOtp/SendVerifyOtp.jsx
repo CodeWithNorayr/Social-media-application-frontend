@@ -4,49 +4,43 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { StoreContext } from "../../Context/AuthContext/AuthContext";
 
-const SendVerifyOtp = () => {
-  const { backendURL, navigate } = useContext(StoreContext);
-  const token = localStorage.getItem("token");
+const sendingOtpToEmail = async (event) => {
+  event.preventDefault();
 
-  const [loading, setLoading] = useState(false);
+  console.log("Button clicked");
 
-  const sendingOtpToEmail = async (event) => {
-    event.preventDefault();
+  if (!token) {
+    console.log("No token");
+    toast.error("You are not logged in");
+    return;
+  }
 
-    if (!token) {
-      toast.error("You are not logged in");
-      return;
-    }
+  try {
+    console.log("Sending request...");
 
-    setLoading(true);
-
-    try {
-      const response = await axios.post(
-        `${backendURL}/api/user/user-otp-verification`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      console.log("OTP RESPONSE:", response.data);
-
-      if (response.data?.success === true) {
-        toast.success("Code sent");
-        navigate("/confirmation/code/verify");
-      } else {
-        toast.warn(response.data?.message || "Failed");
+    const response = await axios.post(
+      `${backendURL}/api/user/user-otp-verification`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
+    );
 
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || "Server error");
-    } finally {
-      setLoading(false);
-    }
-  };
+    console.log("SERVER RESPONSE:", response.data);
+
+    toast.success("Success");
+
+    console.log("Navigating...");
+    navigate("/confirmation/code/verify");
+
+  } catch (error) {
+    console.log("ERROR:", error.response?.data || error.message);
+    toast.error(error.response?.data?.message || "Server error");
+  }
+};
+
   return (
     <div className="SendVerifyOtp-full-div-section">
       <form
