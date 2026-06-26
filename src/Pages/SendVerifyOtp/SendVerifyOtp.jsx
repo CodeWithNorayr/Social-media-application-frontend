@@ -5,7 +5,9 @@ import { toast } from "react-toastify";
 import { StoreContext } from "../../Context/AuthContext/AuthContext";
 
 const SendVerifyOtp = () => {
-  const { backendURL, token, navigate } = useContext(StoreContext);
+  const { backendURL, navigate } = useContext(StoreContext);
+  const token = localStorage.getItem("token");
+
   const [loading, setLoading] = useState(false);
 
   const sendingOtpToEmail = async (event) => {
@@ -29,12 +31,15 @@ const SendVerifyOtp = () => {
         }
       );
 
-      if (response.data.success) {
-        toast.success("Verification code sent to your email");
+      console.log("OTP RESPONSE:", response.data);
+
+      if (response.data?.success === true) {
+        toast.success("Code sent");
         navigate("/confirmation/code/verify");
       } else {
-        toast.warn(response.data.message || "Failed to send code");
+        toast.warn(response.data?.message || "Failed");
       }
+
     } catch (error) {
       console.log(error);
       toast.error(error.response?.data?.message || "Server error");
@@ -42,7 +47,6 @@ const SendVerifyOtp = () => {
       setLoading(false);
     }
   };
-
   return (
     <div className="SendVerifyOtp-full-div-section">
       <form
