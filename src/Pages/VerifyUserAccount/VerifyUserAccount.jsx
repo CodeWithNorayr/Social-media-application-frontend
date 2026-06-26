@@ -35,7 +35,7 @@ const VerifyUserAccount = () => {
 
       if (response?.data?.success) {
         toast.success("Email successfully verified");
-        navigate("/user/post/section");
+        navigate("/confirmation/code/verify");
       } else {
         toast.warn(response?.data?.message || "Invalid verification code");
       }
