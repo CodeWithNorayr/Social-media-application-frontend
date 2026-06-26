@@ -1,185 +1,186 @@
 import { createContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom"; // ✅ FIXED
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
 
 export const StoreContext = createContext(null);
 
 export const StoreContextProvider = ({ children }) => {
-
   const navigate = useNavigate();
 
+  const backendURL =
+    "https://social-media-application-backend-1-8422.onrender.com";
+
+  /* =========================
+        STATE
+  ========================= */
   const [connections, setConnections] = useState([]);
   const [followings, setFollowings] = useState([]);
   const [followers, setFollowers] = useState([]);
   const [pendingRequests, setPendingRequests] = useState([]);
 
-  // Backend URL
-  const backendURL = "https://social-media-application-backend-1-8422.onrender.com";
+  const [countConnections, setCountConnections] = useState(0);
+  const [countFollowings, setCountFollowings] = useState(0);
+  const [countFollowers, setCountFollowers] = useState(0);
+  const [countPendingRequests, setCountPendingRequests] = useState(0);
 
-  // Counting connections, followers, followings, pendingRequests etc. By calling api from the backend
-  const [ countConnections, setCountConnections ] = useState(0);
-  const [ countFollowings, setCountFollowings ] = useState(0);
-  const [ countFollowers, setCountFollowers ] = useState(0);
-  const [ countPendingRequests, setCountPendingRequests ] = useState(0);
-
-  // fetching all users 
   const [usersList, setUsersList] = useState([]);
-
-  // Loading state
   const [loading, setLoading] = useState(false);
 
-  // Token state
   const [token, setToken] = useState(null);
   const [authLoading, setAuthLoading] = useState(true);
 
-  // User data
   const [userData, setUserData] = useState(null);
 
-  // Calling accept friend request api from backend
-  const acceptingFriendRequest = async (id) => {
-    try {
-      const response = await axios.post(`${backendURL}/api/user/connection/accept/${id}`,{},{
-        headers:{
-          Authorization:`Bearer ${token}`
-        }
-      });
-      if ( response.data.success ) {
-        toast.success("You are friends");
-      } else {
-        toast.error("Server error");
-      };
-    } catch (error) {
-      console.log(error);
-      toast.error("Server error 500");
-    };
+  /* =========================
+        AXIOS HELPERS
+  ========================= */
+  const authHeaders = {
+    headers: { Authorization: `Bearer ${token}` }
   };
 
-  // Calling getUserConnections api from the backend
+  /* =========================
+        CONNECTIONS
+  ========================= */
   const getUserConnections = async () => {
     try {
-      const response = await axios.get(`${backendURL}/api/user/connections`,{
-        headers:{
-          Authorization:`Bearer ${token}`
-        }
-      });
-      if ( response.data.success ) {
-        setConnections(response.data.connections);
-        setFollowers(response.data.followers);
-        setFollowings(response.data.following);
-        setPendingRequests(response.data.pendingConnections);
+      const res = await axios.get(
+        `${backendURL}/api/user/connections`,
+        authHeaders
+      );
 
-        // Calling count documents
-        setCountConnections(response.data.countConnections);
-        setCountFollowers(response.data.countFollowers);
-        setCountFollowings(response.data.countFollowing);
-        setCountPendingRequests(response.data.countPendingRequests);
-      } else {
-        toast.error("Server error");
-      };
-    } catch (error) {
-      console.log(error);
-      toast.error(error.response?.data?.message || "Server error");
-    };
+      if (res.data.success) {
+        setConnections(res.data.connections);
+        setFollowers(res.data.followers);
+        setFollowings(res.data.following);
+        setPendingRequests(res.data.pendingConnections);
+
+        setCountConnections(res.data.countConnections);
+        setCountFollowers(res.data.countFollowers);
+        setCountFollowings(res.data.countFollowing);
+        setCountPendingRequests(res.data.countPendingRequests);
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to load connections");
+    }
   };
 
-  useEffect(()=>{
-    if (token) {
-      getUserConnections();
-    }
-  },[token]);
+  const acceptingFriendRequest = async (id) => {
+    try {
+      const res = await axios.post(
+        `${backendURL}/api/user/connection/accept/${id}`,
+        {},
+        authHeaders
+      );
 
-  // FetchingAllUsers
+      if (res.data.success) {
+        toast.success("Friend request accepted");
+        getUserConnections(); // refresh
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Error accepting request");
+    }
+  };
+
+  /* =========================
+        USERS LIST
+  ========================= */
   const fetchingAllUsers = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`${backendURL}/api/total/users/application/users`, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
-      if (response.data.success) {
-        setUsersList(response.data.data);
-      } else {
-        toast.warning("Server is pending, error 500");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("Server error 500");
-    } finally {
-      setLoading(false);
-    };
-  };
-
-  useEffect(() => {
-    if (token) {
-      fetchingAllUsers();
-    }
-  }, [token]);
-
-  // ✅ Load token from localStorage
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) setToken(storedToken);
-    setAuthLoading(false);
-  }, []);
-
-  // ✅ Save token to localStorage
-  useEffect(() => {
-    if (token) {
-      localStorage.setItem("token", token);
-    } else {
-      localStorage.removeItem("token");
-    }
-  }, [token]);
-
-  // ✅ Fetch user data
-  const fetchingUserData = async () => {
-    try {
-      const response = await axios.get(
-        `${backendURL}/api/user/user-profile-page`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
+      const res = await axios.get(
+        `${backendURL}/api/total/users`,
+        authHeaders
       );
 
-      if (response.data.success) {
-        setUserData(response.data.data);
+      if (res.data.success) {
+        setUsersList(res.data.data);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.log(err);
+      toast.error("Failed to fetch users");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  /* =========================
+        USER DATA
+  ========================= */
+  const fetchingUserData = async () => {
+    try {
+      const res = await axios.get(
+        `${backendURL}/api/user/user-profile-page`,
+        authHeaders
+      );
+
+      if (res.data.success) {
+        setUserData(res.data.data);
+      }
+    } catch (err) {
+      console.log(err);
       toast.error("Failed to fetch user");
     }
   };
 
-  // ✅ Run when token changes
+  /* =========================
+        LOAD TOKEN
+  ========================= */
   useEffect(() => {
-    if (token) {
-      fetchingUserData();
-    }
+    const stored = localStorage.getItem("token");
+    if (stored) setToken(stored);
+    setAuthLoading(false);
+  }, []);
+
+  /* =========================
+        SAVE TOKEN
+  ========================= */
+  useEffect(() => {
+    if (token) localStorage.setItem("token", token);
+    else localStorage.removeItem("token");
   }, [token]);
 
-  // ✅ IMPORTANT FIX: expose userData
+  /* =========================
+        FETCH DATA ON TOKEN
+  ========================= */
+  useEffect(() => {
+    if (!token) return;
+
+    fetchingUserData();
+    getUserConnections();
+    fetchingAllUsers();
+  }, [token]);
+
+  /* =========================
+        CONTEXT VALUE
+  ========================= */
   const value = {
     navigate,
     backendURL,
     token,
     setToken,
-    userData,        // ✅ ADDED
-    setUserData,      // ✅ ADDED
+
+    userData,
+    setUserData,
+
     usersList,
     setUsersList,
+
     connections,
     followers,
     followings,
     pendingRequests,
+
     acceptingFriendRequest,
+
     countConnections,
     countFollowers,
     countFollowings,
     countPendingRequests,
+
+    loading,
     authLoading
   };
 
