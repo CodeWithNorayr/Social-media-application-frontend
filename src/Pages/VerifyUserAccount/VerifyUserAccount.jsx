@@ -24,7 +24,7 @@ const VerifyUserAccount = () => {
 
     try {
       const response = await axios.post(
-        `${backendURL}/api/user/user-verifing-account`,
+        `${backendURL}/api/user/user-account-verification`,
         { otp: cleanOtp },
         {
           headers: {
