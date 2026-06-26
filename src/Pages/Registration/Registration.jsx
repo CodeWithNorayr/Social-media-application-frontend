@@ -5,7 +5,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 
 const Registration = () => {
-
   const { navigate, setToken, backendURL } = useContext(StoreContext);
 
   const [data, setData] = useState({
@@ -14,26 +13,28 @@ const Registration = () => {
     password: "",
     location: "",
     bio: "",
-    dob:"",
+    dob: "",
     image: null,
     coverPhoto: null
   });
 
   const [loading, setLoading] = useState(false);
 
-  // Handle input change
+  // TEXT INPUT
   const onChangeHandler = (e) => {
     const { name, value } = e.target;
     setData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Handle file change
+  // FILE INPUT
   const fileChangeHandler = (e) => {
     const { name, files } = e.target;
+    if (!files || files.length === 0) return;
+
     setData(prev => ({ ...prev, [name]: files[0] }));
   };
 
-  // Submit form
+  // SUBMIT
   const submitUserRegistrationForm = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -41,15 +42,13 @@ const Registration = () => {
     try {
       const formData = new FormData();
 
-      // Append text fields
-      formData.append("name", data.name);
-      formData.append("email", data.email);
+      formData.append("name", data.name.trim());
+      formData.append("email", data.email.trim());
       formData.append("password", data.password);
-      formData.append("location", data.location);
-      formData.append("bio", data.bio);
-      formData.append("dob", data.dob);
+      formData.append("location", data.location?.trim() || "");
+      formData.append("bio", data.bio?.trim() || "");
+      formData.append("dob", data.dob || "");
 
-      // Append files
       if (data.image) formData.append("image", data.image);
       if (data.coverPhoto) formData.append("coverPhoto", data.coverPhoto);
 
@@ -66,9 +65,13 @@ const Registration = () => {
       if (response.data.success) {
         setToken(response.data.token);
         localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId",response.data.user._id);
+        localStorage.setItem("userId", response.data.user._id);
+
         toast.success(`${response.data.user.name} registered successfully`);
+
         navigate('/account-verification/code/send');
+      } else {
+        toast.error("Registration failed");
       }
 
     } catch (error) {
@@ -84,106 +87,90 @@ const Registration = () => {
       <form onSubmit={submitUserRegistrationForm} className='user-form-registration'>
 
         {/* NAME */}
-        <div>
-          <input
-            type="text"
-            name="name"
-            placeholder="Adam Smith"
-            value={data.name}
-            onChange={onChangeHandler}
-            required
-          />
-          <p>Username</p>
-        </div>
+        <input
+          type="text"
+          name="name"
+          placeholder="Adam Smith"
+          value={data.name}
+          onChange={onChangeHandler}
+          required
+        />
 
         {/* EMAIL */}
-        <div>
-          <input
-            type="email"
-            name="email"
-            placeholder="adam@gmail.com"
-            value={data.email}
-            onChange={onChangeHandler}
-            required
-          />
-          <p>Email</p>
-        </div>
+        <input
+          type="email"
+          name="email"
+          placeholder="adam@gmail.com"
+          value={data.email}
+          onChange={onChangeHandler}
+          required
+        />
 
         {/* PASSWORD */}
-        <div>
-          <input
-            type="password"
-            name="password"
-            placeholder="aA@#******"
-            value={data.password}
-            onChange={onChangeHandler}
-            required
-          />
-          <p>Password (aA#@***) </p>
-        </div>
+        <input
+          type="password"
+          name="password"
+          placeholder="aA@#******"
+          value={data.password}
+          onChange={onChangeHandler}
+          required
+        />
 
         {/* LOCATION */}
-        <div>
-          <input
-            type="text"
-            name="location"
-            placeholder="Yerevan"
-            value={data.location}
-            onChange={onChangeHandler}
-          />
-          <p>Location</p>
-        </div>
+        <input
+          type="text"
+          name="location"
+          placeholder="Yerevan"
+          value={data.location}
+          onChange={onChangeHandler}
+        />
 
         {/* BIO */}
-        <div>
-          <textarea
-            name="bio"
-            placeholder="Tell about yourself..."
-            value={data.bio}
-            onChange={onChangeHandler}
-          />
-          <p>Bio</p>
-        </div>
+        <textarea
+          name="bio"
+          placeholder="Tell about yourself..."
+          value={data.bio}
+          onChange={onChangeHandler}
+        />
 
-        <div>
-          <input 
-            type="date" 
-            name="dob" 
-            id="dob" 
-            value={data.dob}
-            onChange={onChangeHandler}
-          />
-        </div>
+        {/* DOB */}
+        <input
+          type="date"
+          name="dob"
+          value={data.dob}
+          onChange={onChangeHandler}
+        />
 
         {/* PROFILE IMAGE */}
-        <div>
-          <input
-            type="file"
-            name="image"
-            onChange={fileChangeHandler}
-          />
-          <p>Profile Image</p>
-        </div>
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          onChange={fileChangeHandler}
+        />
 
         {/* COVER PHOTO */}
-        <div>
-          <input
-            type="file"
-            name="coverPhoto"
-            onChange={fileChangeHandler}
-          />
-          <p>Cover Photo</p>
-        </div>
+        <input
+          type="file"
+          name="coverPhoto"
+          accept="image/*"
+          onChange={fileChangeHandler}
+        />
 
-        <div>
-          <p>Already have an account ? <span onClick={()=>navigate("/user/login")} style={{cursor:"pointer", textDecoration:"underline"}}>Login</span></p>
-        </div>
+        <p>
+          Already have an account?
+          <span
+            onClick={() => navigate("/user/login")}
+            style={{ cursor: "pointer", textDecoration: "underline" }}
+          >
+            Login
+          </span>
+        </p>
 
-        {/* BUTTON */}
         <button
-          className='user-form-registration-submit-button'
           type="submit"
           disabled={loading}
+          className='user-form-registration-submit-button'
         >
           {loading ? "Loading..." : "Register"}
         </button>
