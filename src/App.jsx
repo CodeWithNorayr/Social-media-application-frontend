@@ -21,132 +21,35 @@ import PendingRequests from './Pages/PendingRequests/PendingRequests'
 import Notifications from './Pages/Notifications/Notifications'
 import ChatPage from './Pages/ChatPage'
 
-
 const App = () => {
   return (
     <div>
       <ToastContainer />
       <Routes>
+        <Route path='/' element={<UserProtectedRoute><Home /></UserProtectedRoute>} />
+        <Route path='/user/registration' element={<Registration />} />
+        <Route path='/user/login' element={<Login />} />
+        <Route path='/user/profile' element={<UserProtectedRoute><UserProfile /></UserProtectedRoute>} />
+        <Route path='/user/profile/update' element={<UserProtectedRoute><UpdateProfile /></UserProtectedRoute>} />
+        <Route path='/account-verification/code/send' element={<UserProtectedRoute><SendVerifyOtp /></UserProtectedRoute>} />
+        <Route path='/confirmation/code/verify' element={<UserProtectedRoute><VerifyUserAccount /></UserProtectedRoute>} />
+        <Route path='/application/users/list' element={<UserProtectedRoute><UsersList /></UserProtectedRoute>} />
+        <Route path='/user/post/section' element={<UserProtectedRoute><Post /></UserProtectedRoute>} />
+        <Route path='/user/profile/page/:id' element={<UserProtectedRoute><UserProfilePageById /></UserProtectedRoute>} />
+        <Route path='/connections' element={<UserProtectedRoute><Connections /></UserProtectedRoute>} />
+        <Route path='/followings' element={<UserProtectedRoute><Followings /></UserProtectedRoute>} />
+        <Route path='/followers' element={<UserProtectedRoute><Followers /></UserProtectedRoute>} />
+        <Route path='/pendingRequests' element={<UserProtectedRoute><PendingRequests /></UserProtectedRoute>} />
+        <Route path='/notifications' element={<UserProtectedRoute><Notifications /></UserProtectedRoute>} />
+
         <Route
-          path='/'
-          element={
-            <UserProtectedRoute>
-              <Home />
-            </UserProtectedRoute>
-          }
+          path='/chat/page'
+          element={<UserProtectedRoute><ChatPage /></UserProtectedRoute>}
         />
-        <Route
-          path='/user/registration'
-          element={<Registration />}
-        />
-        <Route
-          path='/user/login'
-          element={<Login />}
-        />
-        <Route
-          path='/user/profile'
-          element={
-            <UserProtectedRoute>
-              <UserProfile />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/user/profile/update'
-          element={
-            <UserProtectedRoute>
-              <UpdateProfile />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/account-verification/code/send'
-          element={
-            <UserProtectedRoute>
-              <SendVerifyOtp />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/confirmation/code/verify'
-          element={
-            <UserProtectedRoute>
-              <VerifyUserAccount />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/application/users/list'
-          element={
-            <UserProtectedRoute>
-              <UsersList />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/user/post/section'
-          element={
-            <UserProtectedRoute>
-              <Post />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/user/profile/page/:id'
-          element={
-            <UserProtectedRoute>
-              <UserProfilePageById />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/connections'
-          element={
-            <UserProtectedRoute>
-              <Connections />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/followings'
-          element={
-            <UserProtectedRoute>
-              <Followings />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/followers'
-          element={
-            <UserProtectedRoute>
-              <Followers />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/pendingRequests'
-          element={
-            <UserProtectedRoute>
-              <PendingRequests />
-            </UserProtectedRoute>
-          }
-        />
-        <Route
-          path='/notifications'
-          element={
-            <UserProtectedRoute>
-              <Notifications />
-            </UserProtectedRoute>
-          }
-        />
-        <Route 
-          path='chat/page'
-          element={
-            <UserProtectedRoute>
-              <ChatPage />
-            </UserProtectedRoute>
-          }
-        />
+
+        {/* ✅ FIXED 404 ROUTE */}
+        <Route path="*" element={<div>404 - Page Not Found</div>} />
+
       </Routes>
     </div>
   )
