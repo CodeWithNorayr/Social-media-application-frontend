@@ -1,34 +1,54 @@
 import axios from "axios";
 
-// Create an API instance
+const BASE_URL = "https://social-media-application-backend-1-8422.onrender.com/api/message";
+
+// Create API instance
 export const createAPI = (token) => {
   return axios.create({
-    baseURL: "https://social-media-application-backend-1-8422.onrender.com/api/message",
-    headers: { Authorization: `Bearer ${token}` },
+    baseURL: BASE_URL,
+    headers: {
+      Authorization: `Bearer ${token}`
+    },
     withCredentials: true,
   });
 };
 
 // Get messages with a user
-export const getMessages = (id, token) => {
-  const API = createAPI(token);
-  return API.get(`/chat/messages/${id}`);
+export const getMessages = async (id, token) => {
+  try {
+    const API = createAPI(token);
+    return await API.get(`/chat/messages/${id}`);
+  } catch (error) {
+    throw error;
+  }
 };
 
 // Send message
-export const sendMessage = (id, formData, token) => {
-  const API = createAPI(token);
-  return API.post(`/send/messages/${id}`, formData);
+export const sendMessage = async (id, formData, token) => {
+  try {
+    const API = createAPI(token);
+    return await API.post(`/send/messages/${id}`, formData);
+  } catch (error) {
+    throw error;
+  }
 };
 
-// Mark message seen
-export const markSeen = (id, token) => {
-  const API = createAPI(token);
-  return API.post(`/messages/${id}/seen`);
+// Mark message as seen
+export const markSeen = async (id, token) => {
+  try {
+    const API = createAPI(token);
+    return await API.post(`/messages/${id}/seen`);
+  } catch (error) {
+    throw error;
+  }
 };
 
 // Get unseen messages
-export const getUnseen = (token) => {
-  const API = createAPI(token);
-  return API.get(`/messages/unseen`);
+export const getUnseen = async (token) => {
+  try {
+    const API = createAPI(token);
+    return await API.get(`/messages/unseen`);
+  } catch (error) {
+    throw error;
+  }
 };
