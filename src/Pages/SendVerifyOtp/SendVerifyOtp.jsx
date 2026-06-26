@@ -20,7 +20,7 @@ const SendVerifyOtp = () => {
 
     try {
       const response = await axios.post(
-        `${backendURL}/api/user/user-otpVerification`,
+        `${backendURL}/api/user/user-otp-verification`,
         {},
         {
           headers: {
