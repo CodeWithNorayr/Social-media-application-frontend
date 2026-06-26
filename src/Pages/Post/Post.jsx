@@ -5,7 +5,6 @@ import {
   SendHorizontal,
   Trash,
   Heart,
-  MessageSquareMore,
   User,
   Pencil
 } from 'lucide-react';
@@ -25,7 +24,7 @@ const Post = () => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
-  // EDIT STATES
+  // EDIT
   const [editingPostId, setEditingPostId] = useState(null);
   const [editText, setEditText] = useState("");
   const [editImage, setEditImage] = useState(null);
@@ -33,18 +32,23 @@ const Post = () => {
 
   const slides = [assets.shamcom, assets.share, assets.post];
 
-  // ================= FETCH =================
+  // ================= FETCH POSTS =================
   const fetchingAllPosts = async () => {
     setLoading(true);
     try {
-      const res = await axios.get(`${backendURL}/api/post/fetching/posts`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
+      const res = await axios.get(
+        `${backendURL}/api/post/fetching/posts`,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
 
       if (res.data.success) {
-        setPosts(Array.isArray(res.data.posts) ? res.data.posts : []);
+        setPosts(res.data.posts || []);
+      } else {
+        setPosts([]);
       }
+
     } catch (err) {
+      console.log(err);
       toast.error("Error fetching posts");
     } finally {
       setLoading(false);
@@ -68,53 +72,19 @@ const Post = () => {
         setPosts(prev =>
           prev.map(p =>
             p._id === postId
-              ? {
-                ...p,
-                isLiked: res.data.isLiked ?? !p.isLiked,
-                likesCount: res.data.likesCount ?? p.likesCount
-              }
+              ? { ...p, likes: res.data.likes || p.likes }
               : p
           )
         );
       }
-    } catch {
+
+    } catch (err) {
+      console.log(err);
       toast.error("Like error");
     }
   };
 
-  // ================= IMAGE =================
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setImage(file);
-    setImagePreview(URL.createObjectURL(file));
-  };
-
-  const handleEditImageChange = (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-
-    setEditImage(file);
-    setEditPreview(URL.createObjectURL(file));
-  };
-
-  useEffect(() => {
-    return () => {
-      if (imagePreview) URL.revokeObjectURL(imagePreview);
-      if (editPreview) URL.revokeObjectURL(editPreview);
-    };
-  }, [imagePreview, editPreview]);
-
-  // ================= SLIDER =================
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setSlideIndex(prev => (prev + 1) % slides.length);
-    }, 3000);
-    return () => clearInterval(interval);
-  }, []);
-
-  // ================= CREATE =================
+  // ================= CREATE POST =================
   const createPost = async (e) => {
     e.preventDefault();
 
@@ -136,14 +106,15 @@ const Post = () => {
       if (res.data.success) {
         toast.success("Posted!");
 
-        // ✅ FIX: add new post instead of replacing all
         setPosts(prev => [res.data.post, ...prev]);
 
         setText('');
         setImage(null);
         setImagePreview(null);
       }
-    } catch {
+
+    } catch (err) {
+      console.log(err);
       toast.error("Create failed");
     }
   };
@@ -160,7 +131,9 @@ const Post = () => {
         setPosts(prev => prev.filter(p => p._id !== id));
         toast.success("Deleted");
       }
-    } catch {
+
+    } catch (err) {
+      console.log(err);
       toast.error("Delete failed");
     }
   };
@@ -196,10 +169,10 @@ const Post = () => {
           prev.map(p =>
             p._id === id
               ? {
-                ...p,
-                text: editText || p.text,
-                image: editImage ? editPreview : p.image
-              }
+                  ...p,
+                  text: editText || p.text,
+                  image: editPreview || p.image
+                }
               : p
           )
         );
@@ -207,16 +180,53 @@ const Post = () => {
         toast.success("Updated");
         cancelEditing();
       }
-    } catch {
+
+    } catch (err) {
+      console.log(err);
       toast.error("Update failed");
     }
   };
 
+  // ================= SLIDER =================
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setSlideIndex(prev => (prev + 1) % slides.length);
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [slides.length]);
+
+  // ================= IMAGE HANDLERS =================
+  const handleImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setImage(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
+  const handleEditImageChange = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setEditImage(file);
+    setEditPreview(URL.createObjectURL(file));
+  };
+
+  useEffect(() => {
+    return () => {
+      if (imagePreview) URL.revokeObjectURL(imagePreview);
+      if (editPreview) URL.revokeObjectURL(editPreview);
+    };
+  }, [imagePreview, editPreview]);
+
   return (
     <div>
       <Navbar />
+
       <div className='post-section-full'>
         <main className='post-wrapper'>
+
           {/* CREATE */}
           <form onSubmit={createPost} className='form-section'>
             <textarea
@@ -236,51 +246,56 @@ const Post = () => {
           </form>
 
           {/* POSTS */}
-          {loading ? <p>Loading...</p> : posts.map(post => (
-            <div key={post._id} className='post-card'>
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            posts.map(post => (
+              <div key={post._id} className='post-card'>
 
-              <div className='post-header'>
-                {post.user?.image
-                  ? <img src={post.user.image} className="post-user-image" />
-                  : <User />}
-                <h4>{post.user?.name}</h4>
-              </div>
-
-              {/* EDIT MODE */}
-              {editingPostId === post._id ? (
-                <div>
-                  <textarea value={editText} onChange={(e) => setEditText(e.target.value)} />
-                  {editPreview && <img src={editPreview} />}
-                  <input type="file" onChange={handleEditImageChange} />
-                  <button onClick={() => editUserPost(post._id)}>Save</button>
-                  <button onClick={cancelEditing}>Cancel</button>
+                <div className='post-header'>
+                  {post.user?.image ? (
+                    <img src={post.user.image} className="post-user-image" />
+                  ) : (
+                    <User />
+                  )}
+                  <h4>{post.user?.name}</h4>
                 </div>
-              ) : (
-                <>
-                  {post.text && <p>{post.text}</p>}
-                  {post.image && <img src={post.image} />}
-                </>
-              )}
 
-              {/* ACTIONS */}
-              <div className='post-actions'>
-                <Heart
-                  onClick={() => likeToggling(post._id)}
-                  style={{ color: post.isLiked ? "red" : "gray" }}
-                />
-                {/* <MessageSquareMore /> */}
+                {/* EDIT MODE */}
+                {editingPostId === post._id ? (
+                  <div>
+                    <textarea
+                      value={editText}
+                      onChange={(e) => setEditText(e.target.value)}
+                    />
+                    {editPreview && <img src={editPreview} alt="" />}
+                    <input type="file" onChange={handleEditImageChange} />
 
-                {/* ✅ ONLY OWNER */}
-                {String(userData?._id) === String(post?.user?._id) && (
+                    <button onClick={() => editUserPost(post._id)}>Save</button>
+                    <button onClick={cancelEditing}>Cancel</button>
+                  </div>
+                ) : (
                   <>
-                    <Trash onClick={() => deleteUserPost(post._id)} />
-                    <Pencil onClick={() => startEditing(post)} />
+                    {post.text && <p>{post.text}</p>}
+                    {post.image && <img src={post.image} alt="" />}
                   </>
                 )}
-              </div>
 
-            </div>
-          ))}
+                {/* ACTIONS */}
+                <div className='post-actions'>
+                  <Heart onClick={() => likeToggling(post._id)} />
+
+                  {String(userData?._id) === String(post?.user?._id) && (
+                    <>
+                      <Trash onClick={() => deleteUserPost(post._id)} />
+                      <Pencil onClick={() => startEditing(post)} />
+                    </>
+                  )}
+                </div>
+
+              </div>
+            ))
+          )}
 
         </main>
 
@@ -288,6 +303,7 @@ const Post = () => {
         <aside className='post-aside-section'>
           <img src={slides[slideIndex]} alt="" />
         </aside>
+
       </div>
     </div>
   );
